@@ -1,0 +1,9 @@
+<div class="tab response_command">
+  @if (infoCommand().staticOptions){ @for (staticOption of
+  infoCommand().staticOptions; track $index) {
+  <div class="static_response_container">
+    <p class="name_option orange_color">{{ staticOption.name }}:</p>
+    <p class="description_option tab">{{ staticOption.description }}</p>
+  </div>
+  } }
+</div>

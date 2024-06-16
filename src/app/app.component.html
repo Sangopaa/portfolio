@@ -4,15 +4,27 @@
   </p>
 
   <div class="container-history-commands">
-    @for (command of historyCommands; track $index) { @if (isCommand(command)) {
-    <p>
-      C:\portfolio> <span class="orange_color">{{ command.name }}</span>
-    </p>
-    } @else if (isUnrecognizedCommand(command)) {
-    <p>
-      C:\portfolio> <span class="orange_color">{{ command.message }}</span>
-    </p>
-    } }
+    @for (command of historyCommands; track $index) {
+
+    <div class="history_command">
+      @if (isCommand(command)) {
+      <p>
+        C:\portfolio> <span class="orange_color">{{ command.name }}</span>
+      </p>
+
+      <app-render-commands [infoCommand]="command"></app-render-commands>
+
+      } @else if (isUnrecognizedCommand(command)) {
+      <p>
+        C:\portfolio> <span class="orange_color">{{ command.inputValue }}</span>
+      </p>
+
+      <p class="tab response_command">{{ command.message }}</p>
+
+      }
+    </div>
+
+    }
   </div>
 
   <div class="container-input">
@@ -25,6 +37,7 @@
       class="orange_color"
       selected
       (keydown)="onKeydown($event, commandInput.value)"
+      autocomplete="off"
     />
   </div>
 </div>

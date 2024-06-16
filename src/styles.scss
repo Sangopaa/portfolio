@@ -17,3 +17,28 @@ body {
   background-color: #13171c;
   color: #fff;
 }
+
+.tab {
+  margin: 0 0 0 20px;
+}
+
+.response_command {
+  padding: 20px 0;
+}
+
+.orange_color {
+  color: #c16700;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}

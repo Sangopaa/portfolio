@@ -2,11 +2,12 @@ import { Component, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Command } from '../models/command';
 import { UnrecognizedCommand } from '../models/unrecognizedCommand';
+import { RenderCommandsComponent } from './components/render-commands/render-commands.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RenderCommandsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -50,9 +51,56 @@ export class AppComponent {
       },
       {
         name: 'knowledge',
-      },
-      {
-        name: 'clear',
+        staticOptions: [
+          {
+            name: 'Github',
+            description: '2 years of experience',
+          },
+          {
+            name: 'JavaScript',
+            description: '2 years of experience',
+          },
+          {
+            name: 'TypeScript',
+            description: '2 years of experience',
+          },
+          {
+            name: 'Angular',
+            description: '2 years of experience',
+          },
+          {
+            name: 'Python',
+            description: '2 years of experience',
+          },
+          {
+            name: 'Flask',
+            description: '2 years of experience',
+          },
+          {
+            name: 'MySQL',
+            description: '2 years of experience',
+          },
+          {
+            name: 'Postman/Insomnia',
+            description: '2 years of experience',
+          },
+          {
+            name: 'AWS',
+            description: '2 years of experience',
+          },
+          {
+            name: 'Docker',
+            description: '1 years of experience',
+          },
+          {
+            name: 'Sentry',
+            description: '1 years of experience',
+          },
+          {
+            name: 'Jira',
+            description: '1 years of experience',
+          },
+        ],
       },
     ];
 
@@ -75,7 +123,12 @@ export class AppComponent {
   onKeydown(event: KeyboardEvent, value: string): void {
     if (event.key === 'Enter') {
       this.submitCommand(value);
+      this.commandInput.nativeElement.value = '';
     }
+  }
+
+  goUrl(url: string) {
+    window.open(url, '_blank');
   }
 
   private submitCommand(value: string) {
@@ -93,11 +146,20 @@ export class AppComponent {
     }
 
     this.historyCommands.push(insertHistoryCommand);
+
+    if (value == 'clear') {
+      this.historyCommands = [];
+    }
   }
 
-  executeCommand(command: string): void {
-    console.log(command);
-    console.log(this.historyCommands);
+  executeCommand(nameCommand: string): void {
+    const command = this.commands.find(
+      (command) => command.name == nameCommand
+    );
+
+    if (command?.url) {
+      this.goUrl(command.url);
+    }
   }
 
   isCommand(command: any): command is Command {
