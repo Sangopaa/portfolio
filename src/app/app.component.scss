@@ -1,0 +1,29 @@
+.console_container {
+  width: 80%;
+  margin: 30px auto;
+}
+
+.orange_color {
+  color: #c16700;
+}
+
+.warning-message {
+  margin: 20px 0;
+}
+
+.container-input {
+  display: flex;
+  width: 100%;
+}
+
+.input-label {
+  padding: 0 10px 0 0;
+  flex: 0 0 auto;
+}
+
+input {
+  flex: 1 1 auto;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
