@@ -12,7 +12,10 @@
         C:\portfolio> <span class="orange_color">{{ command.name }}</span>
       </p>
 
-      <app-render-commands [infoCommand]="command"></app-render-commands>
+      <app-render-commands
+        [infoCommand]="command"
+        (focusInput)="focusInput()"
+      ></app-render-commands>
 
       } @else if (isUnrecognizedCommand(command)) {
       <p>

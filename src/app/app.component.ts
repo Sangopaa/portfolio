@@ -15,6 +15,9 @@ export class AppComponent {
   @ViewChild('commandInput') commandInput!: ElementRef;
 
   historyCommands: (Command | UnrecognizedCommand)[] = [];
+  historyInputs: string[] = [];
+  private selectedIndexHistoryInputs: number = -1;
+  private commandBehavior: boolean = false;
   private nameCommands: string[] = [];
 
   private commands: Command[] = [];
@@ -35,7 +38,11 @@ export class AppComponent {
           { name: 'clear', description: 'Clear console' },
         ],
       },
-      { name: 'projects', behavior: 'interactive_atribute' },
+      {
+        name: 'projects',
+        behavior: 'interactive_atribute',
+        options: [{ name: '10Care', url: 'https://prod.10care.life/' }],
+      },
       {
         name: 'linkedin',
         url: 'https://www.linkedin.com/in/santiago-gonzalez-parra-872ab82b4/',
@@ -116,7 +123,7 @@ export class AppComponent {
     });
   }
 
-  private focusInput() {
+  focusInput() {
     this.commandInput.nativeElement.focus();
   }
 
@@ -124,6 +131,34 @@ export class AppComponent {
     if (event.key === 'Enter') {
       this.submitCommand(value);
       this.commandInput.nativeElement.value = '';
+      this.selectedIndexHistoryInputs = -1;
+    }
+
+    if (!this.commandBehavior) {
+      if (event.key === 'ArrowUp') {
+        this.navigateHistory(1);
+      } else if (event.key === 'ArrowDown') {
+        this.navigateHistory(-1);
+      }
+    }
+  }
+
+  navigateHistory(direction: number): void {
+    const maxIndex = this.historyInputs.length - 1;
+
+    this.selectedIndexHistoryInputs += direction;
+
+    if (this.selectedIndexHistoryInputs > maxIndex) {
+      this.selectedIndexHistoryInputs = maxIndex;
+    } else if (this.selectedIndexHistoryInputs < -1) {
+      this.selectedIndexHistoryInputs = -1;
+    }
+
+    if (this.selectedIndexHistoryInputs >= 0) {
+      this.commandInput.nativeElement.value =
+        this.historyInputs[this.selectedIndexHistoryInputs];
+    } else {
+      this.commandInput.nativeElement.value = null;
     }
   }
 
@@ -132,6 +167,7 @@ export class AppComponent {
   }
 
   private submitCommand(value: string) {
+    this.historyInputs.unshift(value);
     let insertHistoryCommand: Command | UnrecognizedCommand;
     if (this.nameCommands.includes(value)) {
       this.executeCommand(value);
@@ -168,6 +204,14 @@ export class AppComponent {
 
   isUnrecognizedCommand(command: any): command is UnrecognizedCommand {
     return 'inputValue' in command && 'message' in command;
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollDown();
+  }
+
+  scrollDown() {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
   }
 
   title = 'portfolio';

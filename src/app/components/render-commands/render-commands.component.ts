@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output, AfterViewInit } from '@angular/core';
 import { Command } from '../../../models/command';
 
 @Component({
@@ -10,4 +10,5 @@ import { Command } from '../../../models/command';
 })
 export class RenderCommandsComponent {
   infoCommand = input.required<Command>();
+  focusInput = output<void>();
 }
