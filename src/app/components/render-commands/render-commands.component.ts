@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, AfterViewInit } from '@angular/core';
 import { Command } from '../../../models/command';
 import { Option } from '../../../models/option';
 
@@ -40,12 +40,6 @@ export class RenderCommandsComponent {
         this.exitInteractiveCommand.emit();
         this.deactivateComponent();
       }
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (!this.infoCommand().behavior) {
-      this.exitInteractiveCommand.emit();
     }
   }
 
