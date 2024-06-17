@@ -1,0 +1,38 @@
+@for (command of historyCommands(); track $index) {
+  @if (isCommand(command)) {
+    <p>
+      C:\portfolio>
+      <span class="orange_color">{{ command.name }}</span>
+    </p>
+    <div class="tab response_command">
+
+    @if (command.staticOptions){
+        @for (staticOption of command.staticOptions; track $index) {
+          <div class="static_response_container">
+            <p class="name_option orange_color">{{ staticOption.name }}:</p>
+            <p class="description_option tab">{{ staticOption.description }}</p>
+          </div>
+        }
+    }
+    @else if (command.behavior) {
+      <div class="interactive_commands_container">
+        @for (interactiveOption of command.options; track $index) {
+          <div class="response_command">
+            <p class="command_name" [class.selected]="interactiveOption.selected">
+              {{ interactiveOption.name }}
+            </p>
+          </div>
+        }
+      </div>
+      }
+    </div>
+  } @else if (isUnrecognizedCommand(command)) {
+      <p>
+        C:\portfolio>
+        <span class="orange_color">{{ command.inputValue }}</span>
+      </p>
+
+      <p class="tab response_command">{{ command.message }}</p>
+
+    }
+}

@@ -3,21 +3,23 @@ import { RouterOutlet } from '@angular/router';
 import { Command } from '../models/command';
 import { UnrecognizedCommand } from '../models/unrecognizedCommand';
 import { RenderCommandsComponent } from './components/render-commands/render-commands.component';
+import { HistoryCommandsComponent } from './components/history-commands/history-commands.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RenderCommandsComponent],
+  imports: [RouterOutlet, RenderCommandsComponent, HistoryCommandsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   @ViewChild('commandInput') commandInput!: ElementRef;
 
-  historyCommands: (Command | UnrecognizedCommand)[] = [];
-  historyInputs: string[] = [];
+  protected commandWithBehavior: boolean = false;
+  protected currentCommand!: Command | UnrecognizedCommand | null;
+  protected historyCommands: (Command | UnrecognizedCommand)[] = [];
+  protected historyInputs: string[] = [];
   private selectedIndexHistoryInputs: number = -1;
-  private commandBehavior: boolean = false;
   private nameCommands: string[] = [];
 
   private commands: Command[] = [];
@@ -40,8 +42,11 @@ export class AppComponent {
       },
       {
         name: 'projects',
-        behavior: 'interactive_atribute',
-        options: [{ name: '10Care', url: 'https://prod.10care.life/' }],
+        behavior: true,
+        options: [
+          { name: '10Care', url: 'https://prod.10care.life/', selected: true },
+          { name: 'CareU', url: 'https://careu.s4l.life/', selected: false },
+        ],
       },
       {
         name: 'linkedin',
@@ -53,8 +58,19 @@ export class AppComponent {
       },
       {
         name: 'experience',
-        behavior: 'interactive_atribute',
-        options: [{ name: 'Science For Life', url: 'https://www.s4l.life/' }],
+        behavior: true,
+        options: [
+          {
+            name: 'Science For Life',
+            url: 'https://www.s4l.life/',
+            selected: true,
+          },
+          {
+            name: 'EMPRESA SAS',
+            url: 'https://www.s4l.life/',
+            selected: false,
+          },
+        ],
       },
       {
         name: 'knowledge',
@@ -117,14 +133,15 @@ export class AppComponent {
   ngAfterViewInit() {
     this.focusInput();
 
-    // Listen for any click event on the document
     this.renderer.listen('document', 'click', (event: Event) => {
       this.focusInput();
     });
   }
 
   focusInput() {
-    this.commandInput.nativeElement.focus();
+    if (!this.commandWithBehavior) {
+      this.commandInput.nativeElement.focus();
+    }
   }
 
   onKeydown(event: KeyboardEvent, value: string): void {
@@ -132,14 +149,10 @@ export class AppComponent {
       this.submitCommand(value);
       this.commandInput.nativeElement.value = '';
       this.selectedIndexHistoryInputs = -1;
-    }
-
-    if (!this.commandBehavior) {
-      if (event.key === 'ArrowUp') {
-        this.navigateHistory(1);
-      } else if (event.key === 'ArrowDown') {
-        this.navigateHistory(-1);
-      }
+    } else if (event.key === 'ArrowUp') {
+      this.navigateHistory(1);
+    } else if (event.key === 'ArrowDown') {
+      this.navigateHistory(-1);
     }
   }
 
@@ -169,41 +182,39 @@ export class AppComponent {
   private submitCommand(value: string) {
     this.historyInputs.unshift(value);
     let insertHistoryCommand: Command | UnrecognizedCommand;
+
     if (this.nameCommands.includes(value)) {
-      this.executeCommand(value);
       insertHistoryCommand = this.commands.find(
         (command) => command.name === value
       ) as Command;
+      this.executeCommand(insertHistoryCommand);
     } else {
       insertHistoryCommand = {
         inputValue: value,
         message: `Command ${value} not recognized`,
       } as UnrecognizedCommand;
+      this.historyCommands.push(insertHistoryCommand);
     }
 
-    this.historyCommands.push(insertHistoryCommand);
+    this.currentCommand = insertHistoryCommand;
 
     if (value == 'clear') {
       this.historyCommands = [];
     }
   }
 
-  executeCommand(nameCommand: string): void {
-    const command = this.commands.find(
-      (command) => command.name == nameCommand
-    );
+  executeCommand(command: Command): void {
+    this.commandWithBehavior = command?.behavior ? true : false;
+
+    if (!this.commandWithBehavior) {
+      this.historyCommands.push(command);
+    } else {
+      this.commandWithBehavior = true;
+    }
 
     if (command?.url) {
       this.goUrl(command.url);
     }
-  }
-
-  isCommand(command: any): command is Command {
-    return 'name' in command;
-  }
-
-  isUnrecognizedCommand(command: any): command is UnrecognizedCommand {
-    return 'inputValue' in command && 'message' in command;
   }
 
   ngAfterViewChecked(): void {
@@ -212,6 +223,25 @@ export class AppComponent {
 
   scrollDown() {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
+  }
+
+  exitInteractiveCommand() {
+    this.commandWithBehavior = false;
+    setTimeout(() => {
+      this.focusInput();
+    }, 500);
+    if (this.currentCommand) {
+      let copyCurrentCommand = JSON.parse(JSON.stringify(this.currentCommand));
+      this.historyCommands.push(copyCurrentCommand);
+      this.currentCommand = null;
+    }
+  }
+
+  isCommand(command: any): command is Command {
+    return 'name' in command;
+  }
+  isUnrecognizedCommand(command: any): command is UnrecognizedCommand {
+    return 'inputValue' in command && 'message' in command;
   }
 
   title = 'portfolio';

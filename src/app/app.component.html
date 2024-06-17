@@ -3,33 +3,30 @@
     Use <span class="orange_color">help</span> to see all commands
   </p>
 
-  <div class="container-history-commands">
-    @for (command of historyCommands; track $index) {
+  @if(historyCommands && historyCommands.length > 0){
+  <div class="history_command">
+    <app-history-commands
+      [historyCommands]="historyCommands"
+    ></app-history-commands>
+  </div>
+  }
 
-    <div class="history_command">
-      @if (isCommand(command)) {
-      <p>
-        C:\portfolio> <span class="orange_color">{{ command.name }}</span>
-      </p>
+  <div class="interactive_command">
+    @if (currentCommand && isCommand(currentCommand) && currentCommand.behavior)
+    {
+    <p>
+      C:\portfolio> <span class="orange_color">{{ currentCommand.name }}</span>
+    </p>
 
-      <app-render-commands
-        [infoCommand]="command"
-        (focusInput)="focusInput()"
-      ></app-render-commands>
-
-      } @else if (isUnrecognizedCommand(command)) {
-      <p>
-        C:\portfolio> <span class="orange_color">{{ command.inputValue }}</span>
-      </p>
-
-      <p class="tab response_command">{{ command.message }}</p>
-
-      }
-    </div>
+    <app-render-commands
+      [infoCommand]="currentCommand"
+      (exitInteractiveCommand)="exitInteractiveCommand()"
+    ></app-render-commands>
 
     }
   </div>
 
+  @if (!commandWithBehavior) {
   <div class="container-input">
     <label class="input-label" for="command">C:\portfolio> </label>
     <input
@@ -43,4 +40,5 @@
       autocomplete="off"
     />
   </div>
+  }
 </div>
