@@ -1,3 +1,5 @@
+@import "../../../styles/variables";
+
 .static_response_container {
   display: flex;
 }
@@ -13,9 +15,11 @@
 }
 
 .command_name.selected::before {
-  content: "➔";
+  content: ">";
+  font-size: 1.6rem;
+  line-height: 35px;
   margin-right: 8px;
   position: absolute;
   left: 0;
-  color: #c16700;
+  color: $secondary-color;
 }

@@ -42,8 +42,12 @@ export class AppComponent {
         name: 'projects',
         behavior: true,
         options: [
-          { name: '10Care', url: 'https://prod.10care.life/', selected: true },
-          { name: 'CareU', url: 'https://careu.s4l.life/', selected: false },
+          {
+            name: '10Care',
+            url: 'https://prod.10care.life/',
+            selected: true,
+            description: 'Patient manager in chronic disease conditions',
+          },
         ],
       },
       {
@@ -62,11 +66,7 @@ export class AppComponent {
             name: 'Science For Life',
             url: 'https://www.s4l.life/',
             selected: true,
-          },
-          {
-            name: 'EMPRESA SAS',
-            url: 'https://www.s4l.life/',
-            selected: false,
+            description: '',
           },
         ],
       },
@@ -75,51 +75,51 @@ export class AppComponent {
         staticOptions: [
           {
             name: 'Github',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'JavaScript',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'TypeScript',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'Angular',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'Python',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'Flask',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'MySQL',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'Postman/Insomnia',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'AWS',
-            description: '2 years of experience',
+            description: '2',
           },
           {
             name: 'Docker',
-            description: '1 years of experience',
+            description: '1',
           },
           {
             name: 'Sentry',
-            description: '1 years of experience',
+            description: '1',
           },
           {
             name: 'Jira',
-            description: '1 years of experience',
+            description: '1',
           },
         ],
       },
@@ -222,7 +222,7 @@ export class AppComponent {
   }
 
   exitInteractiveCommand() {
-    console.log("entra");
+    console.log('entra');
     this.commandWithBehavior = false;
     setTimeout(() => {
       this.focusInput();

@@ -1,6 +1,10 @@
 <div class="console_container">
+  <p class="warning_message">
+    Hello, <span class="primary-color">I'm Santiago</span>, and I'm delighted
+    to have you here.
+  </p>
   <p class="warning-message">
-    Use <span class="orange_color">help</span> to see all commands
+    Use <span class="primary-color">help</span> to see all commands.
   </p>
 
   <div class="container-history-commands">
@@ -9,7 +13,7 @@
     <div class="history_command">
       @if (isCommand(command)) {
       <p>
-        C:\portfolio> <span class="orange_color">{{ command.name }}</span>
+        C:\portfolio> <span class="primary-color">{{ command.name }}</span>
       </p>
 
       <app-render-commands
@@ -19,7 +23,8 @@
 
       } @else if (isUnrecognizedCommand(command)) {
       <p>
-        C:\portfolio> <span class="orange_color">{{ command.inputValue }}</span>
+        C:\portfolio>
+        <span class="primary-color">{{ command.inputValue }}</span>
       </p>
 
       <p class="tab response_command">{{ command.message }}</p>
@@ -38,7 +43,7 @@
       type="text"
       name="command"
       id="command"
-      class="orange_color"
+      class="primary-color"
       selected
       (keydown)="onKeydown($event, commandInput.value)"
       autocomplete="off"

@@ -1,8 +1,9 @@
 <div class="tab response_command">
-  @if (infoCommand().staticOptions){ @for (staticOption of
-  infoCommand().staticOptions; track $index) {
+  @if (infoCommand().staticOptions){ @if(infoCommand().name === "knowledge"){
+  <p class="response_command">This information is in years of experience</p>
+  } @for (staticOption of infoCommand().staticOptions; track $index) {
   <div class="static_response_container">
-    <p class="name_option orange_color">{{ staticOption.name }}:</p>
+    <p class="name_option primary-color">{{ staticOption.name }}:</p>
     <p class="description_option tab">{{ staticOption.description }}</p>
   </div>
   } } @else if (infoCommand().behavior) {
@@ -16,6 +17,13 @@
     </div>
 
     }
+
+    <div class="response_command">
+      <p class="command_name">
+        Press <span class="secondary-color">Ctrl + c</span> to exit of
+        interactive command
+      </p>
+    </div>
   </div>
   }
 </div>
