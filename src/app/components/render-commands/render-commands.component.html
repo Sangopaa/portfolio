@@ -4,15 +4,21 @@
   } @for (staticOption of infoCommand().staticOptions; track $index) {
   <div class="static_response_container">
     <p class="name_option primary-color">{{ staticOption.name }}:</p>
-    <p class="description_option tab">{{ staticOption.description }}</p>
+    <p class="tab">{{ staticOption.description }}</p>
   </div>
   } } @else if (infoCommand().behavior) {
   <div class="interactive_commands_container">
     @for (interactiveOption of infoCommand().options; track $index) {
 
-    <div class="response_command">
-      <p class="command_name" [class.selected]="interactiveOption.selected">
-        {{ interactiveOption.name }}
+    <div class="response_command option-with-behavior">
+      <p
+        class="command_name primary-color"
+        [class.selected]="interactiveOption.selected"
+      >
+        {{ interactiveOption.name }}:
+      </p>
+      <p class="tab">
+        {{ interactiveOption.description }}
       </p>
     </div>
 
@@ -20,7 +26,7 @@
 
     <div class="response_command">
       <p class="command_name">
-        Press <span class="secondary-color">Ctrl + c</span> to exit of
+        Press <span class="secondary-color">CTRL + C</span> to exit of
         interactive command
       </p>
     </div>

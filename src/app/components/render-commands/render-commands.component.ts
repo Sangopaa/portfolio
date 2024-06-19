@@ -31,13 +31,17 @@ export class RenderCommandsComponent {
   handleKeyboardEvent(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
     if (this.infoCommand().behavior) {
+      event.preventDefault();
       if (keyboardEvent.key === 'Enter') {
         this.goToSelectedUrl();
       } else if (keyboardEvent.key === 'ArrowDown') {
         this.navigateOptions(1);
       } else if (keyboardEvent.key === 'ArrowUp') {
         this.navigateOptions(-1);
-      } else if (keyboardEvent.ctrlKey && keyboardEvent.key === 'c') {
+      } else if (
+        (keyboardEvent.ctrlKey && keyboardEvent.key === 'c') ||
+        keyboardEvent.key === 'C'
+      ) {
         this.exitInteractiveCommand.emit();
         this.deactivateComponent();
       }
