@@ -29,7 +29,8 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/_routes.json"
             ],
             "styles": [
               "src/styles.scss"
