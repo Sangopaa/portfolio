@@ -17,6 +17,7 @@
 .command_name.selected::before {
   content: ">";
   font-size: 1.6rem;
+  font-weight: bolder;
   line-height: 35px;
   margin-right: 8px;
   position: absolute;
