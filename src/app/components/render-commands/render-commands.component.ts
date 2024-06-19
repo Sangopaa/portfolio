@@ -1,6 +1,7 @@
 import { Component, input, output, AfterViewInit } from '@angular/core';
 import { Command } from '../../../models/command';
 import { Option } from '../../../models/option';
+import { WindowService } from '../../services/host_app.service';
 
 @Component({
   selector: 'app-render-commands',
@@ -15,13 +16,13 @@ export class RenderCommandsComponent {
 
   private keydownListener: EventListener | null = null;
 
-  constructor() {
+  constructor(private windowService: WindowService) {
     this.keydownListener = this.handleKeyboardEvent.bind(this);
     window.addEventListener('keydown', this.keydownListener);
   }
 
   removeKeyboardListener(): void {
-    if (this.keydownListener) {
+    if (this.keydownListener && this.windowService.isBrowser()) {
       window.removeEventListener('keydown', this.keydownListener);
       this.keydownListener = null;
     }
@@ -82,7 +83,7 @@ export class RenderCommandsComponent {
       (element) => element.selected === true
     );
 
-    if (selectedOption) {
+    if (selectedOption && this.windowService.isBrowser()) {
       window.open(selectedOption.url, '_blank');
     }
   }

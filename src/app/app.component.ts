@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { Command } from '../models/command';
 import { UnrecognizedCommand } from '../models/unrecognizedCommand';
 import { RenderCommandsComponent } from './components/render-commands/render-commands.component';
+import { WindowService } from './services/host_app.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,10 @@ export class AppComponent {
 
   private commands: Command[] = [];
 
-  constructor(private renderer: Renderer2) {
+  constructor(
+    private renderer: Renderer2,
+    private windowService: WindowService
+  ) {
     this.commands = [
       {
         name: 'help',
@@ -177,7 +181,9 @@ export class AppComponent {
   }
 
   goUrl(url: string) {
-    window.open(url, '_blank');
+    if (this.windowService.isBrowser()) {
+      window.open(url, '_blank');
+    }
   }
 
   private submitCommand(value: string) {
@@ -242,7 +248,9 @@ export class AppComponent {
   }
 
   scrollDown() {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
+    if (this.windowService.isBrowser()) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
+    }
   }
 
   title = 'portfolio';
